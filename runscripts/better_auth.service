@@ -1,0 +1,17 @@
+# better_auth systemd service unit file
+
+[Unit]
+Description=better_auth
+After=network.target
+
+[Service]
+User=better_auth
+Group=better_auth
+Type=simple
+ExecStart=/opt/better_auth/better_auth
+TimeoutStopSec=25
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

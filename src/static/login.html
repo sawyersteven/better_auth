@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link id="favicon" rel="shortcut icon" type="image/png"
+        href="data:image/x-icon;base64,AAABAAEAEBAAAAEAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8AAAAAAAAAAAAqFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8AAAAqFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////////////////////////////////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////////////////////////////////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////////////////////////////////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////////////////////////////////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////////////////////////////////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////8qFw8qFw8qFw8qFw////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////8qFw8qFw8qFw8qFw////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////8qFw8qFw8qFw8qFw////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////////8qFw8qFw////////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw////////////////8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8AAAAqFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8AAAAAAAAAAAAqFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8qFw8AAAAAAADAAwAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAADAAwAA" />
+    <title> Login Page </title>
+    <script type="text/javascript">
+        window.onload = () => {
+            usernameInput = document.querySelector("#username");
+            passwordInput = document.querySelector("#password");
+        }
+
+        function SendLogin(e) {
+            e.preventDefault();
+            const XHR = new XMLHttpRequest();
+            const FD = new FormData();
+
+            FD.append("username", usernameInput.value);
+            FD.append("password", passwordInput.value);
+
+            XHR.onload = function () {
+                if (this.status === 200) {
+                    window.location.reload();
+                } else if (this.status === 401) {
+                    document.querySelector("#invalidLoginWarn").classList.remove("hidden");
+                } else if (this.status === 511) {
+                    document.querySelector("#expireWarn").classList.remove("hidden");
+                }
+            };
+
+            XHR.open('POST', '/login');
+            XHR.send(FD);
+        }
+    </script>
+    <style>
+        * {
+            font-family: monospace;
+        }
+
+        body {
+            background-color: #FAFAFA;
+            background-image: radial-gradient(#67E8F9 2px, #FAFAFA 1px);
+            background-size: 3em 3em;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            padding: 0;
+            margin: 0;
+        }
+
+        #box {
+            width: 22em;
+            background-color: #D4D4D4;
+            padding: 2em;
+            margin: 0 auto;
+            box-shadow: -0.3em 0.3em 0 0 #171717;
+        }
+
+        .login_form {
+            width: 20em;
+            margin: 0 auto;
+        }
+
+        label {
+            font-size: 0.75em;
+            font-weight: 700;
+            color: #000;
+        }
+
+        input,
+        button {
+            background-color: #FAFAFA;
+            color: #171717;
+            border: none;
+            width: 20em;
+            height: 3em;
+            padding: 0.5em;
+            display: block;
+            font-size: 1em;
+            transition: 0.25s;
+            outline: none;
+            box-sizing: border-box;
+            margin: 1em 0;
+        }
+
+        button {
+            font-weight: bold;
+        }
+
+
+        button:focus,
+        button:hover {
+            background: #67E8F9;
+            outline: none;
+            cursor: pointer;
+            box-shadow: -0.3em 0.3em 0px 0px #171717;
+        }
+
+        button:active {
+            box-shadow: none;
+        }
+
+        .warnBanner {
+            height: 3em;
+            line-height: 3em;
+            max-width: 20em;
+            text-align: center;
+            font-weight: bold;
+            margin: -5em auto 2em auto;
+            padding: 0 1em;
+            box-shadow: -0.3em 0.3em 0px 0px #171717;
+        }
+
+        #invalidLoginWarn {
+            background-color: #FB923C;
+        }
+
+        #expireWarn {
+            background-color: #C4B5FD;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="warnBanner"></div>
+        <div id="invalidLoginWarn" class="hidden warnBanner">
+            Incorrect username or password
+        </div>
+        <div id="expireWarn" class="hidden warnBanner">
+            Session expired due to inactivity
+        </div>
+        <div id="box">
+            <form class="login_form" onSubmit="SendLogin(event)">
+                <input id="username" type="text" placeholder="username" required />
+                <input id="password" type="password" placeholder="password" required />
+                <button type="submit" cursor="pointer"> Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
