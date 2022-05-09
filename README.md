@@ -39,8 +39,8 @@ Before `better_auth` will run, a user and password must be added. Run the follow
 ```
 /opt/better_auth/better_auth adduser MegaMan87 dR.7#0m4$.7i8#t
 ```
-Users can be removed by deleting their corresponding line in your `better_auth.users` file.
-If a user is added while `better_auth` is running, `better_auth` will need to be restarted to recognize the user.
+Users can be removed by deleting their corresponding line in your `better_auth.pw` file.
+If a user is added while `better_auth` is running it will attempt to reload the password file without restarting the server.
 
 ## Config
 Running `better_auth` for the first time will generate a config file `/etc/better_auth/better_auth.conf`, which is a simple JSON-style config. The default settings will be sufficient for most users, but may be changed to anything you prefer.

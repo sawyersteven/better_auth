@@ -5,8 +5,8 @@ import (
 	"better_auth/pw"
 	"better_auth/token_store"
 	"fmt"
-	"log"
 	"net/http"
+	"os"
 
 	"github.com/jbrodriguez/mlog"
 )
@@ -15,10 +15,11 @@ const CSRF_TOKEN string = "csrf_token"
 const SESSION_TOKEN string = "better_auth_session_token"
 
 type Server struct {
-	addr         string
+	//addr         string
 	pwManager    *pw.PWManager
 	csrfStore    *token_store.TokenStore
 	sessionStore *token_store.TokenStore
+	addr         string
 }
 
 func NewServer(cfg *config.Config) (*Server, error) {
@@ -27,18 +28,25 @@ func NewServer(cfg *config.Config) (*Server, error) {
 		return nil, err
 	}
 	return &Server{
-		addr:         fmt.Sprintf("%s:%d", cfg.Address, cfg.Port),
 		pwManager:    pwm,
 		csrfStore:    token_store.New(CSRF_TOKEN, 15*60),
 		sessionStore: token_store.New(SESSION_TOKEN, cfg.SessionTimeout),
+		addr:         fmt.Sprintf("%s:%d", cfg.Address, cfg.Port),
 	}, nil
 }
 
 func (s *Server) StartAndBlock() {
-	http.HandleFunc("/authrequest", s.authrequest)
-	http.HandleFunc("/login", s.login)
+	m := http.NewServeMux()
+	m.HandleFunc("/reloadpasswd", s.reloadPasswd)
+	m.HandleFunc("/authrequest", s.authrequest)
+	m.HandleFunc("/login", s.login)
 	mlog.Info("Serving at %s\n", s.addr)
-	log.Fatal(http.ListenAndServe(s.addr, nil))
+	err := http.ListenAndServe(s.addr, m)
+
+	if err != nil && err.Error() != "http: Server closed" {
+		mlog.Error(err)
+		os.Exit(1)
+	}
 }
 
 /// GET returns login page html
@@ -105,4 +113,10 @@ func (s *Server) authrequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(401)
+}
+
+func (s *Server) reloadPasswd(w http.ResponseWriter, r *http.Request) {
+	if s.pwManager.Reload() != nil {
+		w.WriteHeader(500)
+	}
 }

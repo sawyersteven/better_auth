@@ -8,6 +8,6 @@ var DefaultPaths struct {
 	Log         string
 }{
 	Config:"/etc/better_auth/better_auth.conf",
-	Passwd:"/etc/better_auth/better_auth.users",
+	Passwd:"/etc/better_auth/better_auth.pw",
 	Log:"/var/log/better_auth/"
 }

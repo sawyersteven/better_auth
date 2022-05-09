@@ -70,6 +70,15 @@ func (a *PWManager) parseAuthFile(filePath string) error {
 	return nil
 }
 
+func (a *PWManager) Reload() error {
+	a.lock.Lock()
+	for k := range a.users {
+		delete(a.users, k)
+	}
+	a.lock.Unlock()
+	return a.parseAuthFile(a.file)
+}
+
 /// Adds user to file and in-memory cache
 func (a *PWManager) AddUser(username string, password string) error {
 	mlog.Info("Adding user `%s` to password file `%s`", username, a.file)
@@ -78,7 +87,7 @@ func (a *PWManager) AddUser(username string, password string) error {
 		return err
 	}
 
-	err = a.validatePassword(password)
+	err = ValidatePassword(password)
 	if err != nil {
 		return err
 	}
@@ -148,7 +157,7 @@ func (a *PWManager) validateUsername(username string) error {
 	return nil
 }
 
-func (a *PWManager) validatePassword(password string) error {
+func ValidatePassword(password string) error {
 	if len(password) < 8 {
 		return errors.New("password too short (min 8 characters)")
 	}

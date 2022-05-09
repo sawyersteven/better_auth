@@ -1,7 +1,7 @@
-auth_request /auth;
+auth_request /authrequest;
 
-location /auth{
-        proxy_pass http://localhost:8675/auth;
+location /authrequest{
+        proxy_pass http://localhost:8675/authrequest;
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";
         proxy_set_header Time $msec;

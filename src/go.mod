@@ -8,4 +8,9 @@ require (
 	golang.org/x/crypto v0.0.0-20220427172511-eb4f295cb31f
 )
 
-require github.com/alexflint/go-scalar v1.1.0 // indirect
+require golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 // indirect
+
+require (
+	github.com/alexflint/go-scalar v1.1.0 // indirect
+	golang.org/x/term v0.0.0-20220411215600-e5f449aeb171
+)

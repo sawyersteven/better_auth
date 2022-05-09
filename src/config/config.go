@@ -41,7 +41,7 @@ func Default() *Config {
 
 type adduserCmd struct {
 	Username string `arg:"positional,required" help:"New user name"`
-	Password string `arg:"positional,required" help:"New user's password"` // TODO enter at cli
+	Password string `arg:"positional" help:"New user's password"`
 }
 
 func Build() (*Config, error) {

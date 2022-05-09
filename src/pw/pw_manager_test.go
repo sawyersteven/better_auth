@@ -16,7 +16,7 @@ func TestMain(m *testing.M) {
 /// Tests creating new manager
 func TestNewPWManager(t *testing.T) {
 	dir := t.TempDir()
-	f := path.Join(dir, "better_auth.users")
+	f := path.Join(dir, "better_auth.pw")
 	os.WriteFile(f, []byte(""), 0644)
 
 	_, err := New(f)
@@ -27,7 +27,7 @@ func TestNewPWManager(t *testing.T) {
 
 func TestCreateFile(t *testing.T) {
 	dir := t.TempDir()
-	f := path.Join(dir, "better_auth.users")
+	f := path.Join(dir, "better_auth.pw")
 	_, err := New(f)
 	if err != nil {
 		t.Fatal(err)
@@ -37,7 +37,7 @@ func TestCreateFile(t *testing.T) {
 /// Tests adding user to auth file and memory. Writes and reads temporary auth file
 func TestAddUser(t *testing.T) {
 	dir := t.TempDir()
-	f := path.Join(dir, "better_auth.users")
+	f := path.Join(dir, "better_auth.pw")
 	os.WriteFile(f, []byte(""), 0644)
 
 	user := "JohnWayne"
@@ -81,7 +81,7 @@ func TestAddUser(t *testing.T) {
 /// Tests bad user names
 func TestBadUsernames(t *testing.T) {
 	dir := t.TempDir()
-	f := path.Join(dir, "better_auth.users")
+	f := path.Join(dir, "better_auth.pw")
 	os.WriteFile(f, []byte(""), 0644)
 
 	c, err := New(f)
@@ -105,7 +105,7 @@ func TestBadUsernames(t *testing.T) {
 /// Tests bad passwords
 func TestBadPasswords(t *testing.T) {
 	dir := t.TempDir()
-	f := path.Join(dir, "better_auth.users")
+	f := path.Join(dir, "better_auth.pw")
 	os.WriteFile(f, []byte(""), 0644)
 
 	c, err := New(f)
@@ -123,7 +123,7 @@ func TestBadPasswords(t *testing.T) {
 
 func TestBadPWFile(t *testing.T) {
 	dir := t.TempDir()
-	f := path.Join(dir, "better_auth.users")
+	f := path.Join(dir, "better_auth.pw")
 	os.WriteFile(f, []byte("not_a:valid:entry"), 0644)
 
 	_, err := New(f)
