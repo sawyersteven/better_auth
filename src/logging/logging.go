@@ -1,4 +1,3 @@
-// NOTE done
 package logging
 
 import (

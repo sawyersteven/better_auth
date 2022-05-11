@@ -3,11 +3,13 @@
 package config
 
 var DefaultPaths struct {
-	UserConfig  string
-	Auth 		string
+	Config  string
+	Passwd 		string
 	Log         string
-}{
-	Config:"/etc/better_auth/better_auth.conf",
-	Passwd:"/etc/better_auth/better_auth.pw",
-	Log:"/var/log/better_auth/"
+}
+
+func inti(){
+	DefaultPaths.Config = "/etc/better_auth/better_auth.conf"
+	DefaultPaths.Passwd = "/etc/better_auth/better_auth.pw"
+	DefaultPaths.Log = "/var/log/better_auth/"
 }

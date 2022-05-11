@@ -1,7 +1,5 @@
 package token_store
 
-// NOTE done
-
 import (
 	"crypto/rand"
 	"encoding/hex"
@@ -121,4 +119,12 @@ func (s *TokenStore) RefreshExp(token *Token) error {
 	token.expires = &exp
 
 	return nil
+}
+
+/// Removes token, rendering the id invalid.
+/// Returns bool indicating if the id existed to begin with
+func (s *TokenStore) Remove(id string) bool {
+	_, exists := s.tokens[id]
+	delete(s.tokens, id)
+	return exists
 }
